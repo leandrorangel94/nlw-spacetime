@@ -27,7 +27,9 @@ export async function memoriesRoutes(app: FastifyInstance) {
     const { id } = paramsSchema.parse(request.params);
 
     const memory = await prisma.memory.findUniqueOrThrow({
-      where: { id },
+      where: {
+        id,
+      },
     });
 
     return memory;
@@ -40,7 +42,7 @@ export async function memoriesRoutes(app: FastifyInstance) {
       isPublic: z.coerce.boolean().default(false),
     });
 
-    const { content, coverUrl, isPublic } = bodySchema.parse(request.params);
+    const { content, coverUrl, isPublic } = bodySchema.parse(request.body);
 
     const memory = await prisma.memory.create({
       data: {
@@ -60,13 +62,14 @@ export async function memoriesRoutes(app: FastifyInstance) {
     });
 
     const { id } = paramsSchema.parse(request.params);
+
     const bodySchema = z.object({
       content: z.string(),
       coverUrl: z.string(),
       isPublic: z.coerce.boolean().default(false),
     });
 
-    const { content, coverUrl, isPublic } = bodySchema.parse(request.params);
+    const { content, coverUrl, isPublic } = bodySchema.parse(request.body);
 
     const memory = await prisma.memory.update({
       where: {
@@ -90,7 +93,9 @@ export async function memoriesRoutes(app: FastifyInstance) {
     const { id } = paramsSchema.parse(request.params);
 
     await prisma.memory.delete({
-      where: { id },
+      where: {
+        id,
+      },
     });
   });
 }
